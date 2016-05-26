@@ -2,6 +2,12 @@
     function fKoTab(options) {
         var self = this;
         self.options = options;
+        // self.options = {
+        //     fDataHook:null,
+        //     fNavTextHook:null,
+        //     fAfterAddTab:null,
+        //     fAfterRemoveTab:null
+        // };
         self.oTabItemAdd = new fTabItem(self,0, 1,'&nbsp;+&nbsp;');
         self.aTab = ko.observableArray([self.oTabItemAdd]);
         self.nCurTabIndex = ko.observable(1);
@@ -50,6 +56,9 @@
             oTab.sNavText(self.options.fNavTextHook(oTab.nIndex()));
         }
         self.aTab.splice(nLen - 1, 0, oTab);
+        if(self.options.fAfterAddTab){
+            self.options.fAfterAddTab();
+        }
     }
     fTabItem.prototype.fRemoveTab = function(item) {
         var self = this.oTabView;
@@ -74,6 +83,9 @@
             }
         }
         self.aTab.remove(item);
+        if(self.options.fAfterRemoveTab){
+            self.options.fAfterRemoveTab();
+        }
     }
 
     window["fKoTab"] = fKoTab;
