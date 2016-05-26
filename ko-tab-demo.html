@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ko tab1</title>
+    <link rel="stylesheet" type="text/css" href="ko-tab.css" />
+</head>
+<body>
+    <div style="padding:50px;">
+        <div data-bind="with:oAdCreativeTab" class="tabContainer left">
+            <div class="tab-nav fix" style="margin-top:-30px">
+                <ul data-bind="foreach:aTab" class="tab-menu">
+                    <li data-bind="css:{'tab-menu-current':bCurrent}" class="tab-menu-item fix">
+                        <!-- ko if: bNavTab -->
+                        <a href="javascript:;" data-bind="text:sNavText,click:fTabClick,style:{width:sTabWidth}" class="fl"></a>
+                        <span data-bind="click:fRemoveTab" class="tab-box-close fl">×</span>
+                        <!-- /ko -->
+                        <!-- ko if: !bNavTab() -->
+                        <a href="javascript:;" data-bind="html:sNavText,click:fAddTab" class="fl"></a>
+                        <!-- /ko -->
+                    </li>
+                </ul>
+            </div>
+            <div data-bind="foreach:aTab" class="tab-box cm-border">
+                <div data-bind="css:{'tab-box-hide':!bCurrent()},if:bNavTab" class="tab-box-item">
+                    <h1 data-bind="text:sNavText" style="color:green"></h1>
+                    <div data-bind="with:oData">
+                        sFileUploadId: <h1 data-bind="text:sFileUploadId"></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-bind="with:oAdTab" class="tabContainer left" style="margin-top:30px">
+            <div class="tab-nav fix">
+                <ul data-bind="foreach:aTab" class="tab-menu">
+                    <li data-bind="css:{'tab-menu-current':bCurrent}" class="tab-menu-item fix">
+                        <!-- ko if: bNavTab -->
+                        <a href="javascript:;" data-bind="text:sNavText,click:fTabClick,style:{width:sTabWidth}" class="fl"></a>
+                        <span data-bind="click:fRemoveTab" class="tab-box-close fl">×</span>
+                        <!-- /ko -->
+                        <!-- ko if: !bNavTab() -->
+                        <a href="javascript:;" data-bind="html:sNavText,click:fAddTab" class="fl"></a>
+                        <!-- /ko -->
+                    </li>
+                </ul>
+            </div>
+            <div data-bind="foreach:aTab" class="tab-box cm-border">
+                <div data-bind="css:{'tab-box-hide':!bCurrent()},if:bNavTab" class="tab-box-item">
+                    <h1 data-bind="text:sNavText" style="color:green"></h1>
+                    <div data-bind="with:oData" style="position:relative;height:638px;">
+                        sFileUploadId: <h1 data-bind="text:sFileUploadId"></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./lib/knockout-3.4.0.js"></script>
+    <script type="text/javascript" src="ko-tab.js"></script>
+    <script type="text/javascript">
+        var oDesignView = new fMainView();
+        ko.applyBindings(oDesignView);
+        oDesignView.oAdCreativeTab.fAddTab();
+        oDesignView.oAdTab.fAddTab();
+        oDesignView.oAdTab.fAddTab();
+        function fMainView() {
+            var self = this;
+            self.oAdCreativeTab = new fKoTab({
+                fDataHook:function(nIndex){
+                    return new fAdCreative(nIndex);     
+                },
+                fNavTextHook:function(nIndex){
+                    return 'Creative' + nIndex;
+                }
+            });
+            self.oAdTab = new fKoTab({
+                fDataHook:function(nIndex){
+                    return new fAdCreative(nIndex);     
+                },
+                fNavTextHook:function(nIndex){
+                    return 'Ad-' + nIndex;
+                }
+            });
+        }
+        function fAdCreative(nIndex) {
+            var self = this;
+            self.nIndex = ko.observable(nIndex);
+            self.sFileUploadId = ko.pureComputed(function() {
+                return 'fileUpload' + self.nIndex();
+            });
+            self.sImageId = ko.observable();
+            self.sImageUrl = ko.observable();
+            self.sImageName = ko.observable();
+            self.bShowImg = ko.pureComputed(function() {
+                return !!self.sImageUrl();
+            });
+            self.sTextId = ko.observable();
+            self.sTextName = ko.observable();
+            self.sTextTitle = ko.observable();
+            self.sTextContent = ko.observable();
+            self.sTextDes = ko.observable();
+            self.aRuleType = ko.observableArray([
+                { value: 'title', text: 'Title' },
+                { value: 'item_id', text: 'ID' }
+            ]);
+            self.sRuleType = ko.observable();
+            self.sRuleOperator = ko.observable();
+            self.sRuleValue = ko.observable();
+            self.aRuleValue = ko.observableArray();
+            self.bTemplate = ko.observable(true);
+            self.fAdUploadImg = function() {}
+            self.fAddImg = function(json) {
+                var aImg = json.data,
+                    oImg = null;
+                if (aImg && aImg.length) {
+                    oImg = aImg[0];
+                } else {
+                    oImg = json;
+                }
+                if (oImg.id) {
+                    self.sImageId(oImg.id);
+                    self.sImageUrl(oImg.image.url);
+                    self.sImageName(oImg.image.name);
+                } else {
+                    alert('invalid image format');
+                }
+            }
+            self.fRemoveImg = function() {
+                self.sImageUrl(null);
+                self.sImageId(null);
+                self.sImageName(null);
+            }
+            self.fFetchImg = function(oData) {
+
+            }
+            self.fAddText = function(oText) {
+                self.sTextId(oText.id);
+                self.sTextName(oText.text.name);
+                self.sTextTitle(oText.text.title);
+                self.sTextContent(oText.text.body);
+                self.sTextDes(oText.text.description);
+            }
+            self.fRemoveText = function() {
+                self.sTextId(null);
+                self.sTextName('');
+                self.sTextTitle('');
+                self.sTextContent('');
+                self.sTextDes('');
+            }
+        }
+    </script>
+</body>
+
+</html>
