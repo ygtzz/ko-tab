@@ -86,3 +86,13 @@
     .tab-box-hide {
         display: none;
     }
+    /* Round Tabs */
+    .tab-menu-item {
+        border-radius: 8px 8px 0 0;
+    }
+    .tab-menu-item:before {
+        border-radius: 8px 0 0 0;
+    }
+    .tab-menu-item:after {
+        border-radius: 0 8px 0 0;
+    }
