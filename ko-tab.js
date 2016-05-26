@@ -15,7 +15,7 @@
     fKoTab.prototype.fAddTab = function() {
         this.oTabItemAdd.fAddTab();
     }
-    fKoTab.prototype.fGetCruuentData = function() {
+    fKoTab.prototype.fGetCurrentData = function() {
         return this.aTab()[this.nCurTabIndex() - 1].oData;
     }
     fKoTab.prototype.fGetAllData = function() {
