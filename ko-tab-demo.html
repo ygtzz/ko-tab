@@ -13,7 +13,7 @@
                 <ul data-bind="foreach:aTab" class="tab-menu">
                     <li data-bind="css:{'tab-menu-current':bCurrent}" class="tab-menu-item fix">
                         <!-- ko if: bNavTab -->
-                        <a href="javascript:;" data-bind="text:sNavText,click:fTabClick,style:{width:sTabWidth}" class="fl"></a>
+                        <a href="javascript:;" data-bind="click:fTabClick,text:sNavText,style:{width:sTabWidth}" class="fl"></a>
                         <span data-bind="click:fRemoveTab" class="tab-box-close fl">×</span>
                         <!-- /ko -->
                         <!-- ko if: !bNavTab() -->
@@ -76,7 +76,22 @@
                     return nLen > 2;
                 },
                 fShowAdd:function(nLen){
-                    return nLen < 5;
+                    return nLen < 50;
+                },
+                fAfterTabActive:function(oTab){
+                    console.log('tab ' + oTab.nIndex());
+                },
+                fSetTabWidth:function(nIndex,nLen){
+                    if(nLen < 3){
+                        return '80px';
+                    }
+                    if(nLen < 5){
+                        return '50px';
+                    }
+                    if(nLen < 7){
+                        return '20px';
+                    }
+                    return '10px';
                 }
             });
             self.oAdTab = new fKoTab({
