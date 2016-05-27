@@ -6,7 +6,9 @@
         //     fDataHook:null,
         //     fNavTextHook:null,
         //     fAfterAddTab:null,
-        //     fAfterRemoveTab:null
+        //     fAfterRemoveTab:null,
+        //     fShowAdd:null,
+        //     fCanRemoveTab:null
         // };
         self.oTabItemAdd = new fTabItem(self,0, 1,'&nbsp;+&nbsp;');
         self.aTab = ko.observableArray([self.oTabItemAdd]);
@@ -40,6 +42,13 @@
             return '80px';
         });
         self.sNavText = ko.observable(sNavText);
+        self.bShowAdd = ko.pureComputed(function(){
+            var nLen = self.oTabView.aTab().length - 1;
+            if(self.oTabView.options.fShowAdd){
+                return self.oTabView.options.fShowAdd(nLen);
+            }
+            return true;
+        });
         self.oData = {};
     }
     fTabItem.prototype.fTabClick = function() {
@@ -65,7 +74,7 @@
         var nIndex = item.nIndex(),
             aTab = self.aTab(),
             nLen = aTab.length;
-        if (nLen === 2) {
+        if(self.options.fCanRemoveTab && !self.options.fCanRemoveTab(nLen - 1)){
             return;
         }
         if (nIndex === 1) {

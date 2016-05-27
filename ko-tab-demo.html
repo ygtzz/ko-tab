@@ -17,7 +17,7 @@
                         <span data-bind="click:fRemoveTab" class="tab-box-close fl">×</span>
                         <!-- /ko -->
                         <!-- ko if: !bNavTab() -->
-                        <a href="javascript:;" data-bind="html:sNavText,click:fAddTab" class="fl"></a>
+                        <a href="javascript:;" data-bind="html:sNavText,click:fAddTab,visible:bShowAdd" class="fl"></a>
                         <!-- /ko -->
                     </li>
                 </ul>
@@ -71,6 +71,12 @@
                 },
                 fNavTextHook:function(nIndex){
                     return 'Creative' + nIndex;
+                },
+                fCanRemoveTab:function(nLen){
+                    return nLen > 2;
+                },
+                fShowAdd:function(nLen){
+                    return nLen < 5;
                 }
             });
             self.oAdTab = new fKoTab({
@@ -79,6 +85,9 @@
                 },
                 fNavTextHook:function(nIndex){
                     return 'Ad-' + nIndex;
+                },
+                fCanRemoveTab:function(nLen){
+                    return nLen > 1;
                 }
             });
         }
