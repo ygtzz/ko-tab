@@ -14,7 +14,7 @@
                     <li data-bind="css:{'tab-menu-current':bCurrent}" class="tab-menu-item fix">
                         <!-- ko if: bNavTab -->
                         <a href="javascript:;" data-bind="click:fTabClick,text:sNavText,style:{width:sTabWidth}" class="fl"></a>
-                        <span data-bind="click:fRemoveTab" class="tab-box-close fl">×</span>
+                        <span data-bind="click:fRemoveTab,visible:bShowRemove" class="tab-box-close fl">×</span>
                         <!-- /ko -->
                         <!-- ko if: !bNavTab() -->
                         <a href="javascript:;" data-bind="html:sNavText,click:fAddTab,visible:bShowAdd" class="fl"></a>
@@ -75,6 +75,9 @@
                 fCanRemoveTab:function(nLen){
                     return nLen > 2;
                 },
+                fShowRemove:function(nLen){
+                    return nLen > 2;
+                },
                 fShowAdd:function(nLen){
                     return nLen < 50;
                 },
@@ -85,13 +88,7 @@
                     if(nLen < 3){
                         return '80px';
                     }
-                    if(nLen < 5){
-                        return '50px';
-                    }
-                    if(nLen < 7){
-                        return '20px';
-                    }
-                    return '10px';
+                    return '50px';
                 }
             });
             self.oAdTab = new fKoTab({

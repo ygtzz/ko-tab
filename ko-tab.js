@@ -8,6 +8,7 @@
         //     fAfterAddTab:null,
         //     fAfterRemoveTab:null,
         //     fShowAdd:null,
+        //     fShowRemove:null,
         //     fCanRemoveTab:null
         //     fAfterTabActive:null,
         //     fSetTabWidth:null
@@ -52,6 +53,13 @@
             var nLen = self.oTabView.aTab().length - 1;
             if(self.oTabView.options.fShowAdd){
                 return self.oTabView.options.fShowAdd(nLen);
+            }
+            return true;
+        });
+        self.bShowRemove = ko.pureComputed(function(){
+            var nLen = self.oTabView.aTab().length - 1;
+            if(self.oTabView.options.fShowRemove){
+                return self.oTabView.options.fShowRemove(nLen);
             }
             return true;
         });
