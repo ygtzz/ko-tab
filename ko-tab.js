@@ -3,6 +3,7 @@
         var self = this;
         self.options = options;
         // self.options = {
+        //     bActiveNew:null,
         //     fDataHook:null,
         //     fNavTextHook:null,
         //     fAfterAddTab:null,
@@ -72,8 +73,8 @@
         }
     }
     fTabItem.prototype.fAddTab = function() {
-        var self = this.oTabView;
-        var nLen = self.aTab().length,
+        var self = this.oTabView,
+            nLen = self.aTab().length,
             oTab = new fTabItem(self,nLen);
         if(self.options.fDataHook){
             oTab.oData = self.options.fDataHook(oTab.nIndex());
@@ -84,6 +85,9 @@
         self.aTab.splice(nLen - 1, 0, oTab);
         if(self.options.fAfterAddTab){
             self.options.fAfterAddTab();
+        }
+        if(self.options.bActiveNew){
+            oTab.fTabClick();
         }
     }
     fTabItem.prototype.fRemoveTab = function(item) {

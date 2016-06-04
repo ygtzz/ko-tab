@@ -66,6 +66,7 @@
         function fMainView() {
             var self = this;
             self.oAdCreativeTab = new fKoTab({
+                bActiveNew:true,
                 fDataHook:function(nIndex){
                     return new fAdCreative(nIndex);     
                 },
