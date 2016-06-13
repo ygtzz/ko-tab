@@ -18,8 +18,8 @@
         self.aTab = ko.observableArray([self.oTabItemAdd]);
         self.nCurTabIndex = ko.observable(1);
     };
-    fKoTab.prototype.fAddTab = function() {
-        this.oTabItemAdd.fAddTab();
+    fKoTab.prototype.fAddTab = function(bDisableActive) {
+        this.oTabItemAdd.fAddTab(bDisableActive);
     }
     fKoTab.prototype.fGetCurrentData = function() {
         return this.aTab()[this.nCurTabIndex() - 1].oData;
@@ -72,7 +72,7 @@
             return this.oTabView.options.fAfterTabActive(this);
         }
     }
-    fTabItem.prototype.fAddTab = function() {
+    fTabItem.prototype.fAddTab = function(bDisableActive) {
         var self = this.oTabView,
             nLen = self.aTab().length,
             oTab = new fTabItem(self,nLen);
@@ -86,7 +86,7 @@
         if(self.options.fAfterAddTab){
             self.options.fAfterAddTab();
         }
-        if(self.options.bActiveNew){
+        if(self.options.bActiveNew && !bDisableActive){
             oTab.fTabClick();
         }
     }
