@@ -19,7 +19,7 @@
         self.nCurTabIndex = ko.observable(1);
     };
     fKoTab.prototype.fAddTab = function(bDisableActive) {
-        this.oTabItemAdd.fAddTab(bDisableActive);
+        this.oTabItemAdd.fAddTab(null,null,bDisableActive);
     }
     fKoTab.prototype.fGetCurrentData = function() {
         return this.aTab()[this.nCurTabIndex() - 1].oData;
@@ -72,7 +72,7 @@
             return this.oTabView.options.fAfterTabActive(this);
         }
     }
-    fTabItem.prototype.fAddTab = function(bDisableActive) {
+    fTabItem.prototype.fAddTab = function(data,evt,bDisableActive) {
         var self = this.oTabView,
             nLen = self.aTab().length,
             oTab = new fTabItem(self,nLen);
